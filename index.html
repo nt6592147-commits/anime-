@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" style="scroll-padding-top: 100px;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEOANIME // Premium Cinematic Deck</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    },
+                    colors: {
+                        brandRed: '#ff003c',
+                        brandRedDark: '#b3002a',
+                        darkBg: '#08080c',
+                        cardBg: '#12121a',
+                        neonCyan: '#00f0ff',
+                        neonPurple: '#9d00ff'
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.25, filter: 'drop-shadow(0 0 20px rgba(255,0,60,0.4))' },
+                            '50%': { opacity: 0.45, filter: 'drop-shadow(0 0 40px rgba(255,0,60,0.8))' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(1deg)' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(50px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #08080c; }
+        ::-webkit-scrollbar-thumb { background: #1f1f2e; border-radius: 10px; border: 2px solid #08080c; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff003c; }
+        
+        .glass-nav { 
+            background: linear-gradient(to bottom, rgba(8,8,12,0.98) 0%, rgba(8,8,12,0.8) 70%, transparent 100%); 
+            backdrop-filter: blur(20px); 
+        }
+        .text-stroke-rank {
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
+            color: transparent;
+            font-size: 140px;
+            font-weight: 900;
+            line-height: 0.7;
+            letter-spacing: -6px;
+        }
+        .anime-card-hover:hover .text-stroke-rank {
+            -webkit-text-stroke: 2px #ff003c;
+            color: rgba(255, 0, 60, 0.05);
+            text-shadow: 0 0 30px rgba(255, 0, 60, 0.6);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Fixed Background Anime Art styling */
+        .character-backdrop {
+            position: fixed;
+            right: -5%;
+            bottom: -5%;
+            width: 55vw;
+            height: 90vh;
+            background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center top;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 80%),
+                        linear-gradient(to top, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 90%);
+            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 85%),
+                                linear-gradient(to top, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 95%);
+            mix-blend-mode: lighten;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans selection:bg-brandRed selection:text-white overflow-x-hidden relative">
+
+    <!-- Glowing Drift Mesh & Background Art -->
+    <div class="fixed inset-0 bg-gradient-to-tr from-darkBg via-darkBg to-[#110515] z-0"></div>
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-brandRed/5 rounded-full filter blur-[150px] pointer-events-none z-0"></div>
+    <div class="character-backdrop animate-pulse-glow"></div>
+
+    <div id="toast-container" class="fixed bottom-6 left-6 z-[300] space-y-3"></div>
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed top-0 w-full z-[100] glass-nav transition-all duration-300 px-6 py-4 lg:px-12 border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="javascript:void(0)" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="font-display text-2xl font-black tracking-tighter text-brandRed flex items-center gap-2 drop-shadow-[0_0_15px_rgba(255,0,60,0.4)] hover:scale-105 transition transform">
+                <i class="fa-solid fa-compact-disc animate-spin" style="animation-duration: 6s;"></i> NEO<span class="text-white">ANIME</span>
+            </a>
+
+            <!-- Center Nav Links -->
+            <div class="hidden lg:flex items-center gap-8 text-sm font-bold text-gray-300">
+                <a href="#trending" class="hover:text-white transition">Trending</a>
+                <a href="#explore" class="hover:text-white transition">Explore</a>
+                <a href="#radar" class="hover:text-white transition">Radar</a>
+                <a href="#characters" class="hover:text-white transition">Legends</a>
+                <a href="javascript:void(0)" onclick="toggleWatchlistPane()" class="hover:text-white transition relative group flex items-center gap-1.5 bg-white/5 px-4 py-2 rounded-full border border-white/10 hover:bg-white/10">
+                    <i class="fa-solid fa-folder-open text-xs text-brandRed group-hover:animate-bounce"></i> Watchlist
+                    <span id="watchlist-count" class="absolute -top-1.5 -right-1.5 bg-brandRed text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg shadow-brandRed/30">0</span>
+                </a>
+            </div>
+
+            <!-- Search and Dynamic Auth -->
+            <div class="hidden lg:flex items-center gap-6">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <input id="nav-search" type="text" oninput="searchCatalog(this.value)" placeholder="Search catalog..." class="bg-white/5 border border-white/10 rounded-full py-1.5 pl-9 pr-4 text-xs text-white focus:outline-none focus:ring-1 focus:ring-brandRed transition w-48 focus:w-64">
+                </div>
+                <div id="auth-section-desktop" class="flex items-center gap-4">
+                    <button onclick="toggleAuthModal('signin')" class="text-sm font-bold hover:text-brandRed transition">Sign In</button>
+                    <button onclick="toggleAuthModal('signup')" class="bg-brandRed hover:bg-brandRedDark text-white text-xs px-5 py-2.5 rounded-lg font-bold tracking-wider transition shadow-[0_0_15px_rgba(255,0,60,0.4)]">PREMIUM</button>
+                </div>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-white text-2xl z-[110] hover:text-brandRed transition">
+                <i id="menu-icon" class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER MENU -->
+    <div id="mobile-menu" class="fixed inset-0 bg-darkBg/98 backdrop-blur-2xl translate-x-full transition-transform duration-300 lg:hidden flex flex-col justify-start items-center pt-32 pb-12 gap-8 text-xl font-black z-[90] overflow-y-auto w-full h-screen border-l border-white/5">
+        <div class="w-4/5 relative mb-4">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+            <input id="mobile-search" type="text" oninput="searchCatalog(this.value)" placeholder="Search catalog..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-brandRed">
+        </div>
+        <a href="#trending" onclick="toggleMobileMenu()" class="hover:text-brandRed transition">Trending Now</a>
+        <a href="#explore" onclick="toggleMobileMenu()" class="hover:text-brandRed transition">Explore Deck</a>
+        <a href="#radar" onclick="toggleMobileMenu()" class="hover:text-brandRed transition">Seasonal Radar</a>
+        <a href="#characters" onclick="toggleMobileMenu()" class="hover:text-brandRed transition">Legendary Hall</a>
+        <a href="javascript:void(0)" onclick="toggleMobileMenu(); toggleWatchlistPane();" class="hover:text-brandRed flex items-center gap-2 relative">
+            <i class="fa-solid fa-folder-open text-brandRed"></i> Watchlist
+            <span id="watchlist-count-mobile" class="bg-brandRed text-white text-[11px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg shadow-brandRed/30 ml-1">0</span>
+        </a>
+        <div id="auth-section-mobile" class="flex flex-col items-center gap-4 w-full px-8 mt-4 border-t border-white/5 pt-8">
+            <button onclick="toggleMobileMenu(); toggleAuthModal('signin');" class="text-gray-300 hover:text-white">Sign In</button>
+            <button onclick="toggleMobileMenu(); toggleAuthModal('signup');" class="w-full bg-brandRed text-white text-sm py-4 rounded-xl font-bold shadow-[0_0_20px_rgba(255,0,60,0.4)]">JOIN PREMIUM</button>
+        </div>
+    </div>
+
+    <!-- MAIN HERO UNIT -->
+    <header class="relative w-full min-h-screen flex items-end justify-start px-6 pb-24 md:px-12 lg:px-24 bg-cover bg-center bg-fixed z-10" style="background-image: url('https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1920&q=80');">
+        <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-darkBg/60 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-darkBg/95 via-darkBg/40 to-transparent"></div>
+        
+        <div class="relative z-10 max-w-4xl animate-slide-up">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-brandRed text-white text-[10px] font-black tracking-widest px-3 py-1.5 rounded shadow-[0_0_15px_rgba(255,0,60,0.8)] uppercase">#1 Global Release</span>
+                <span class="text-white text-xs font-bold bg-white/10 backdrop-blur px-3 py-1.5 rounded border border-white/20"><i class="fa-solid fa-star text-yellow-500 mr-1.5"></i> 9.8 / 10</span>
+            </div>
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4 text-white uppercase leading-[0.85] drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+                Cyberpunk<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brandRed via-pink-500 to-neonPurple">Edgerunners</span>
+            </h1>
+            <p class="text-gray-300 text-base md:text-lg lg:text-xl mb-8 line-clamp-3 font-normal leading-relaxed max-w-2xl drop-shadow-md">
+                In a dystopian metropolis obsessed with technology and modification, a street kid attempts to survive by becoming an edgerunner—a mercenary outlaw also known as a cyberpunk.
+            </p>
+            <div class="flex flex-wrap items-center gap-4">
+                <button onclick="playMediaTrailer('Cyberpunk: Edgerunners Official Preview', 'https://www.youtube.com/watch?v=JtqIas3bYhg')" class="bg-white hover:bg-gray-200 text-black px-8 py-4 rounded-xl font-black transition flex items-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.3)] text-sm hover:scale-105 duration-300">
+                    <i class="fa-solid fa-play text-xl"></i> PLAY TRAILER
+                </button>
+                <button onclick="addToWatchlist('Cyberpunk: Edgerunners')" class="bg-black/50 hover:bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-bold transition flex items-center gap-3 text-sm backdrop-blur-md hover:scale-105 duration-300">
+                    <i class="fa-solid fa-plus text-xl"></i> My List
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- FLOATING SEARCH DECK (Revealed dynamically) -->
+    <section id="search-results-section" class="hidden max-w-7xl mx-auto px-6 py-16 space-y-6 relative z-20">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <h2 class="font-display text-3xl font-black uppercase tracking-tight flex items-center gap-3">
+                <span class="w-2.5 h-8 bg-brandRed rounded-full"></span> Search Results <span id="search-highlight" class="text-brandRed text-2xl italic font-normal"></span>
+            </h2>
+            <button onclick="clearSearch()" class="text-xs bg-white/5 border border-white/10 hover:bg-white/10 px-5 py-2.5 rounded-full transition font-bold">Clear Search</button>
+        </div>
+        <div id="search-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamic search results populated here -->
+        </div>
+    </section>
+
+    <!-- CONTENT STREAM -->
+    <main id="main-stream" class="max-w-7xl mx-auto px-6 py-16 space-y-32 relative z-20 -mt-10">
+
+        <!-- 1. TRENDING NOW SECTION -->
+        <section id="trending" class="space-y-6">
+            <h2 class="font-display text-3xl md:text-4xl font-black tracking-tight flex items-center gap-3 uppercase">
+                <span class="w-2.5 h-8 bg-brandRed rounded-full shadow-[0_0_15px_#ff003c]"></span> Trending Now
+            </h2>
+
+            <div class="flex overflow-x-auto gap-12 pb-10 pt-4 snap-x hide-scrollbar">
+                <!-- Card 1 (Chainsaw Man) -->
+                <div class="anime-card min-w-[260px] md:min-w-[320px] relative anime-card-hover snap-start cursor-pointer group" data-title="Chainsaw Man" data-genre="Dark Fantasy" onclick="openAnimeDetails('Chainsaw Man', 'Denji is a teenage boy living with a Chainsaw Devil named Pochita. Due to the debt his father left behind, he has been living a rock-bottom life while repaying his debt.', 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80', 'MAPPA', '12', '9.4', 'Dark Fantasy', 'https://www.youtube.com/watch?v=qHWYenO4x54')">
+                    <span class="text-stroke-rank absolute -left-8 bottom-6 z-20 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-4">1</span>
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[420px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Chainsaw Man" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">MAPPA</span>
+                            <h3 class="font-display font-black text-xl text-white group-hover:text-brandRed transition truncate">Chainsaw Man</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.4</span><span>12 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 (Demon Slayer) -->
+                <div class="anime-card min-w-[260px] md:min-w-[320px] relative anime-card-hover snap-start cursor-pointer group" data-title="Demon Slayer" data-genre="Shonen" onclick="openAnimeDetails('Demon Slayer', 'Tanjirou Kamado is a kindhearted, intelligent boy who lives with his family in the mountains. Everything changes when his family is attacked and slaughtered by demons.', 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80', 'Ufotable', '26', '9.7', 'Shonen', 'https://www.youtube.com/watch?v=cc-14dayspv')">
+                    <span class="text-stroke-rank absolute -left-8 bottom-6 z-20 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-4">2</span>
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[420px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80" alt="Demon Slayer" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">Ufotable</span>
+                            <h3 class="font-display font-black text-xl text-white group-hover:text-brandRed transition truncate">Demon Slayer</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.7</span><span>26 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 (Attack on Titan) -->
+                <div class="anime-card min-w-[260px] md:min-w-[320px] relative anime-card-hover snap-start cursor-pointer group" data-title="Attack on Titan" data-genre="Dark Fantasy" onclick="openAnimeDetails('Attack on Titan', 'Centuries ago, mankind was slaughtered to near extinction by monstrous humanoid creatures called Titans, forcing humans to hide behind massive concentric walls.', 'https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?auto=format&fit=crop&w=600&q=80', 'WIT Studio', '87', '9.9', 'Dark Fantasy', 'https://youtu.be/l96zmDlWCBk')">
+                    <span class="text-stroke-rank absolute -left-8 bottom-6 z-20 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-4">3</span>
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[420px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?auto=format&fit=crop&w=600&q=80" alt="Attack on Titan" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">WIT Studio</span>
+                            <h3 class="font-display font-black text-xl text-white group-hover:text-brandRed transition truncate">Attack on Titan</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.9</span><span>87 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 (Jujutsu Kaisen) -->
+                <div class="anime-card min-w-[260px] md:min-w-[320px] relative anime-card-hover snap-start cursor-pointer group" data-title="Jujutsu Kaisen" data-genre="Shonen" onclick="openAnimeDetails('Jujutsu Kaisen', 'A boy swallows a cursed talisman - the finger of a demon - and becomes cursed himself. He enters a shaman school to be able to locate the demon\'s other body parts.', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80', 'MAPPA', '24', '9.5', 'Shonen', 'https://www.youtube.com/watch?v=AH68O-j70lI')">
+                    <span class="text-stroke-rank absolute -left-8 bottom-6 z-20 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-4">4</span>
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[420px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Jujutsu Kaisen" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">MAPPA</span>
+                            <h3 class="font-display font-black text-xl text-white group-hover:text-brandRed transition truncate">Jujutsu Kaisen</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.5</span><span>24 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. EXPLORE DECK / GENRE NAVIGATION -->
+        <section id="explore" class="space-y-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="font-display text-3xl md:text-4xl font-black tracking-tight flex items-center gap-3 uppercase">
+                        <span class="w-2.5 h-8 bg-brandRed rounded-full shadow-[0_0_15px_#ff003c]"></span> Explore Universes
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">Select any macro sector to filter the active catalog deck below.</p>
+                </div>
+                <button onclick="clearExploreGrid()" id="genre-reset-btn" class="hidden text-xs font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-full transition items-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Genre 1 -->
+                <div onclick="filterExploreGrid('Shonen')" class="genre-btn relative h-32 rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-brandRed transition duration-300 shadow-xl" data-genre-id="Shonen">
+                    <div class="absolute inset-0 bg-gradient-to-br from-orange-600 to-red-900 opacity-60 group-hover:scale-110 transition duration-500"></div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                        <i class="fa-solid fa-bolt-lightning text-2xl text-white mb-2 group-hover:animate-bounce"></i>
+                        <span class="font-display text-lg font-black tracking-wide uppercase text-white">Shonen</span>
+                    </div>
+                </div>
+                <!-- Genre 2 -->
+                <div onclick="filterExploreGrid('Dark Fantasy')" class="genre-btn relative h-32 rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-brandRed transition duration-300 shadow-xl" data-genre-id="Dark Fantasy">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-950 to-purple-950 opacity-60 group-hover:scale-110 transition duration-500"></div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                        <i class="fa-solid fa-skull text-2xl text-white mb-2 group-hover:animate-bounce"></i>
+                        <span class="font-display text-lg font-black tracking-wide uppercase text-white">Dark Fantasy</span>
+                    </div>
+                </div>
+                <!-- Genre 3 -->
+                <div onclick="filterExploreGrid('Cyberpunk')" class="genre-btn relative h-32 rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-brandRed transition duration-300 shadow-xl" data-genre-id="Cyberpunk">
+                    <div class="absolute inset-0 bg-gradient-to-br from-teal-950 to-cyan-900 opacity-60 group-hover:scale-110 transition duration-500"></div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                        <i class="fa-solid fa-terminal text-2xl text-white mb-2 group-hover:animate-bounce"></i>
+                        <span class="font-display text-lg font-black tracking-wide uppercase text-white">Cyberpunk</span>
+                    </div>
+                </div>
+                <!-- Genre 4 -->
+                <div onclick="filterExploreGrid('Sci-Fi')" class="genre-btn relative h-32 rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-brandRed transition duration-300 shadow-xl" data-genre-id="Sci-Fi">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-950 to-teal-900 opacity-60 group-hover:scale-110 transition duration-500"></div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                        <i class="fa-solid fa-satellite text-2xl text-white mb-2 group-hover:animate-bounce"></i>
+                        <span class="font-display text-lg font-black tracking-wide uppercase text-white">Sci-Fi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORE INTERACTIVE CATALOG DECK -->
+            <div id="explore-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-6">
+                
+                <!-- Deck 1 (Cyberpunk Edgerunners) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Cyberpunk: Edgerunners" data-genre="Cyberpunk" onclick="openAnimeDetails('Cyberpunk: Edgerunners', 'In a dystopian metropolis obsessed with technology and modification, a street kid attempts to survive by becoming an edgerunner—a mercenary outlaw also known as a cyberpunk.', 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80', 'Trigger', '10', '9.8', 'Cyberpunk', 'https://www.youtube.com/watch?v=JtqIas3bYhg')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Cyberpunk: Edgerunners" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">TRIGGER</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Cyberpunk: Edgerunners</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.8</span><span>10 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 2 (Chainsaw Man) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Chainsaw Man" data-genre="Dark Fantasy" onclick="openAnimeDetails('Chainsaw Man', 'Denji is a teenage boy living with a Chainsaw Devil named Pochita. Due to the debt his father left behind, he has been living a rock-bottom life while repaying his debt.', 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80', 'MAPPA', '12', '9.4', 'Dark Fantasy', 'https://www.youtube.com/watch?v=qHWYenO4x54')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Chainsaw Man" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">MAPPA</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Chainsaw Man</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.4</span><span>12 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 3 (Demon Slayer) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Demon Slayer" data-genre="Shonen" onclick="openAnimeDetails('Demon Slayer', 'Tanjirou Kamado is a kindhearted, intelligent boy who lives with his family in the mountains. Everything changes when his family is attacked and slaughtered by demons.', 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80', 'Ufotable', '26', '9.7', 'Shonen', 'https://youtu.be/l96zmDlWCBk?si=qxqKl8bi-vY27rP8')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80" alt="Demon Slayer" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">UFOTABLE</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Demon Slayer</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.7</span><span>26 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 4 (Attack on Titan) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Attack on Titan" data-genre="Dark Fantasy" onclick="openAnimeDetails('Attack on Titan', 'Centuries ago, mankind was slaughtered to near extinction by monstrous humanoid creatures called Titans, forcing humans to hide behind massive concentric walls.', 'https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?auto=format&fit=crop&w=600&q=80', 'WIT Studio', '87', '9.9', 'Dark Fantasy', 'https://www.youtube.com/watch?v=CID-sYQ_YgA')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?auto=format&fit=crop&w=600&q=80" alt="Attack on Titan" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">WIT STUDIO</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Attack on Titan</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.9</span><span>87 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 5 (Jujutsu Kaisen) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Jujutsu Kaisen" data-genre="Shonen" onclick="openAnimeDetails('Jujutsu Kaisen', 'A boy swallows a cursed talisman - the finger of a demon - and becomes cursed himself. He enters a shaman school to be able to locate the demon\'s other body parts.', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80', 'MAPPA', '24', '9.5', 'Shonen', 'https://www.youtube.com/watch?v=AH68O-j70lI')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Jujutsu Kaisen" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">MAPPA</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Jujutsu Kaisen</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.5</span><span>24 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 6 (Steins;Gate) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Steins;Gate" data-genre="Sci-Fi" onclick="openAnimeDetails('Steins;Gate', 'A self-proclaimed mad scientist named Rintarou Okabe accidentally discovers a method of sending text messages to the past, triggering a series of dangerous temporal conspiracies.', 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80', 'White Fox', '24', '9.7', 'Sci-Fi', 'https://www.youtube.com/watch?v=uMYhjVlaY1U')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" alt="Steins;Gate" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">WHITE FOX</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Steins;Gate</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.7</span><span>24 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 7 (Psycho-Pass) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Psycho-Pass" data-genre="Cyberpunk" onclick="openAnimeDetails('Psycho-Pass', 'In a futuristic Japan, the Sibyl System measures the mental states of citizens to assess their threat level—capturing criminals before they even commit crimes.', 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80', 'Production I.G', '22', '8.9', 'Cyberpunk', 'https://www.youtube.com/watch?v=yf7B0S9O6Cg')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=600&q=80" alt="Psycho-Pass" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">PRODUCTION I.G</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Psycho-Pass</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>8.9</span><span>22 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck 8 (Neon Genesis Evangelion) -->
+                <div class="anime-card explore-card relative anime-card-hover cursor-pointer group" data-title="Neon Genesis Evangelion" data-genre="Sci-Fi" onclick="openAnimeDetails('Neon Genesis Evangelion', 'A teenage boy is recruited by his cold father to pilot a giant bio-machine mecha called an Evangelion to defend a ruined Tokyo from giant alien monsters.', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80', 'Gainax', '26', '9.4', 'Sci-Fi', 'https://www.youtube.com/watch?v=13nSISwxrY4')">
+                    <div class="rounded-2xl overflow-hidden shadow-2xl relative z-10 border border-white/5 group-hover:border-brandRed/60 transition-all duration-300 h-[380px] bg-[#0c0c12]">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80" alt="Neon Genesis Evangelion" class="w-full h-full object-cover group-hover:scale-110 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <span class="bg-brandRed text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded mb-2 inline-block">GAINAX</span>
+                            <h3 class="font-display font-black text-lg text-white group-hover:text-brandRed transition truncate">Neon Genesis Evangelion</h3>
+                            <div class="flex items-center justify-between mt-2 text-xs text-gray-400 font-bold"><span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>9.4</span><span>26 Episodes</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. SEASONAL COUNTDOWN RADAR -->
+        <section id="radar" class="bg-cardBg/60 backdrop-blur-md p-8 md:p-12 rounded-3xl border border-white/5 relative overflow-hidden shadow-2xl">
+            <div class="absolute top-0 right-0 w-80 h-80 bg-brandRed/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+                <div>
+                    <h2 class="font-display text-2xl md:text-3xl font-black tracking-tight uppercase">Seasonal Release Radar</h2>
+                    <p class="text-sm text-gray-400 mt-1">Real-time updates on highly anticipated upcoming cinematic chapters.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                <!-- Upcoming 1 (Jujutsu Kaisen Season 3) -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 bg-black/40 p-5 rounded-2xl border border-white/5 hover:border-brandRed transition-all duration-300 group cursor-pointer backdrop-blur-sm" onclick="openAnimeDetails('Jujutsu Kaisen S3', 'The deadly Culling Games begin. Sorcerers from the past awaken to engage in an all-out battle royale designed to force human evolution.', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80', 'MAPPA', 'Pending', 'TBD', 'Shonen', 'https://www.youtube.com/watch?v=EJGBZqgeNVL')">
+                    <div class="w-full sm:w-28 h-48 sm:h-36 bg-cover bg-center rounded-xl border border-white/10 group-hover:scale-105 transition duration-300 shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80');"></div>
+                    <div>
+                        <span class="text-[10px] text-brandRed border border-brandRed/30 bg-brandRed/5 px-2.5 py-1 rounded-full font-black uppercase tracking-widest mb-2 inline-block">Fall 2026</span>
+                        <h4 class="font-display font-black text-xl text-white group-hover:text-brandRed transition uppercase">Jujutsu Kaisen S3</h4>
+                        <p class="text-xs text-gray-400 mt-2 line-clamp-2 leading-relaxed">The deadly Culling Games begin. Sorcerers from the past awaken to fight in a battle royale.</p>
+                    </div>
+                </div>
+
+                <!-- Upcoming 2 (One Punch Man Season 3) -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 bg-black/40 p-5 rounded-2xl border border-white/5 hover:border-brandRed transition-all duration-300 group cursor-pointer backdrop-blur-sm" onclick="openAnimeDetails('One Punch Man S3', 'The Monster Association base is breached. Saitama prepares to face Garou in a confrontation of cosmic limits.', 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=600&q=80', 'J.C. Staff', 'TBD', 'TBD', 'Shonen', 'https://www.youtube.com/watch?v=GEqrnpiV0RG')">
+                    <div class="w-full sm:w-28 h-48 sm:h-36 bg-cover bg-center rounded-xl border border-white/10 group-hover:scale-105 transition duration-300 shadow-lg" style="background-image: url('https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=600&q=80');"></div>
+                    <div>
+                        <span class="text-[10px] text-neonCyan border border-neonCyan/30 bg-neonCyan/5 px-2.5 py-1 rounded-full font-black uppercase tracking-widest mb-2 inline-block">Winter 2027</span>
+                        <h4 class="font-display font-black text-xl text-white group-hover:text-neonCyan transition uppercase">One Punch Man S3</h4>
+                        <p class="text-xs text-gray-400 mt-2 line-clamp-2 leading-relaxed">The Hero Association assaults the Monster Association base. Garou breaks his limits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LEGENDARY CHARACTER HALL OF FAME -->
+        <section id="characters" class="space-y-12 text-center pt-8 border-t border-white/5 relative z-10">
+            <div>
+                <h2 class="font-display text-3xl font-black uppercase tracking-tight text-white">Character Hall of Fame</h2>
+                <p class="text-sm text-gray-400 mt-2">Vote to push your favorite icons to the top of our community dashboard.</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-10 md:gap-16">
+                <!-- Satoru -->
+                <div class="flex flex-col items-center gap-4 animate-float group">
+                    <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white/10 bg-cover bg-center avatar-glow cursor-pointer" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80');">
+                        <button onclick="castCharacterVote('Satoru', event)" class="absolute bottom-1 right-1 bg-brandRed hover:bg-brandRedDark text-white text-xs w-8 h-8 rounded-full border-2 border-darkBg flex items-center justify-center transition active:scale-90 shadow-lg"><i class="fa-solid fa-heart"></i></button>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white group-hover:text-brandRed transition">Satoru G.</h4>
+                        <p class="text-[10px] text-gray-500 uppercase font-black mt-1"><i class="fa-solid fa-heart text-brandRed animate-pulse"></i> <span id="votes-Satoru">142</span>,000 Votes</p>
+                    </div>
+                </div>
+                <!-- Levi -->
+                <div class="flex flex-col items-center gap-4 animate-float group" style="animation-delay: 1.5s;">
+                    <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white/10 bg-cover bg-center avatar-glow cursor-pointer" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80');">
+                        <button onclick="castCharacterVote('Levi', event)" class="absolute bottom-1 right-1 bg-brandRed hover:bg-brandRedDark text-white text-xs w-8 h-8 rounded-full border-2 border-darkBg flex items-center justify-center transition active:scale-90 shadow-lg"><i class="fa-solid fa-heart"></i></button>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white group-hover:text-brandRed transition">Levi A.</h4>
+                        <p class="text-[10px] text-gray-500 uppercase font-black mt-1"><i class="fa-solid fa-heart text-brandRed animate-pulse"></i> <span id="votes-Levi">138</span>,000 Votes</p>
+                    </div>
+                </div>
+                <!-- Makima -->
+                <div class="flex flex-col items-center gap-4 animate-float group" style="animation-delay: 0.8s;">
+                    <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white/10 bg-cover bg-center avatar-glow cursor-pointer" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80');">
+                        <button onclick="castCharacterVote('Makima', event)" class="absolute bottom-1 right-1 bg-brandRed hover:bg-brandRedDark text-white text-xs w-8 h-8 rounded-full border-2 border-darkBg flex items-center justify-center transition active:scale-90 shadow-lg"><i class="fa-solid fa-heart"></i></button>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white group-hover:text-brandRed transition">Makima</h4>
+                        <p class="text-[10px] text-gray-500 uppercase font-black mt-1"><i class="fa-solid fa-heart text-brandRed animate-pulse"></i> <span id="votes-Makima">95</span>,000 Votes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#040407] border-t border-white/5 py-12 text-center text-xs text-gray-500 relative z-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="font-display text-xl font-black text-white opacity-40 mb-4 tracking-wider"><i class="fa-solid fa-compact-disc"></i> NEOANIME</h2>
+            <p class="mb-6">&copy; 2026 NEOANIME. Crafted for ultimate cinematic discovery and review.</p>
+            <div class="flex justify-center gap-8 text-lg">
+                <a href="javascript:void(0)" onclick="triggerAuraToast('Connecting to Discord community...', 'fa-brands fa-discord', 'text-brandRed')" class="hover:text-white transition transform hover:-translate-y-1 duration-300"><i class="fa-brands fa-discord"></i></a>
+                <a href="javascript:void(0)" onclick="triggerAuraToast('Opening Twitter feed...', 'fa-brands fa-twitter', 'text-brandRed')" class="hover:text-white transition transform hover:-translate-y-1 duration-300"><i class="fa-brands fa-twitter"></i></a>
+                <a href="javascript:void(0)" onclick="triggerAuraToast('Opening GitHub repository...', 'fa-brands fa-github', 'text-brandRed')" class="hover:text-white transition transform hover:-translate-y-1 duration-300"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WATCHLIST SIDE PANEL -->
+    <div id="watchlist-pane" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-[#0d0d14] z-[200] shadow-[0_0_60px_rgba(0,0,0,0.95)] transform translate-x-full transition-transform duration-300 border-l border-white/5 flex flex-col justify-between">
+        <div class="p-6 h-full flex flex-col space-y-6">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <h3 class="font-display text-xl font-black tracking-tight flex items-center gap-2"><i class="fa-solid fa-folder-open text-brandRed"></i> MY WATCHLIST</h3>
+                <button onclick="toggleWatchlistPane()" class="text-gray-400 hover:text-white text-xl transition bg-white/5 w-10 h-10 rounded-full flex items-center justify-center hover:rotate-90 duration-300"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="watchlist-items-feed" class="space-y-4 overflow-y-auto flex-1 pr-2 hide-scrollbar">
+                <!-- Populated Dynamically -->
+            </div>
+        </div>
+        <div class="p-6 bg-[#09090e] border-t border-white/10">
+            <button onclick="clearWatchlist()" class="w-full border border-gray-800 text-gray-400 hover:bg-brandRed hover:text-white hover:border-brandRed text-xs font-bold py-4 rounded-xl transition uppercase tracking-widest duration-300">Clear Watchlist</button>
+        </div>
+    </div>
+
+    <!-- ANIME REVIEW & METADATA MODAL -->
+    <div id="details-modal" class="fixed inset-0 z-[150] hidden bg-black/95 backdrop-blur-md overflow-y-auto p-4 sm:p-6 md:p-10 flex items-center justify-center" onclick="closeAnimeDetailsOutside(event)">
+        <div class="w-full max-w-5xl mx-auto bg-cardBg rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(255,0,60,0.15)] relative animate-slide-up my-auto" onclick="event.stopPropagation()">
+            <button onclick="closeAnimeDetails()" class="absolute top-4 right-4 z-50 bg-black/80 hover:bg-brandRed text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300 hover:rotate-90"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div id="modal-backdrop-img" class="w-full h-72 sm:h-[380px] bg-cover bg-center relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-cardBg via-cardBg/50 to-transparent"></div>
+                <div class="absolute bottom-8 left-8 right-8 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <span id="modal-genre-tag" class="bg-brandRed text-[10px] px-3 py-1.5 rounded-full font-black uppercase tracking-widest shadow-[0_0_15px_rgba(255,0,60,0.4)]">Genre</span>
+                        <h2 id="modal-title" class="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white mt-4 drop-shadow-2xl tracking-tighter uppercase leading-none">Title</h2>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="playMediaTrailer(currentModalTargetAnime + ' Official Trailer', currentModalTrailerUrl)" class="bg-white hover:bg-gray-200 text-black px-6 py-3 rounded-xl font-black transition flex items-center gap-2 text-xs shadow-lg duration-300">
+                            <i class="fa-solid fa-play"></i> Clip
+                        </button>
+                        <button onclick="addCurrentToWatchlist()" class="bg-white/10 hover:bg-white hover:text-black text-white border border-white/20 px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 text-xs backdrop-blur shadow-lg duration-300">
+                            <i class="fa-solid fa-plus"></i> Watchlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-8 grid grid-cols-1 lg:grid-cols-3 gap-10 bg-[#09090e]">
+                <!-- Reviews and Pacing Input -->
+                <div class="lg:col-span-2 space-y-8">
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Synopsis</h4>
+                        <p id="modal-description" class="text-sm text-gray-300 leading-relaxed font-light">Description here.</p>
+                    </div>
+
+                    <div class="bg-cardBg p-6 rounded-2xl border border-white/5 space-y-4">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wide"><i class="fa-solid fa-keyboard text-brandRed mr-2"></i>Submit Community Review</h4>
+                        <div class="flex items-center gap-2">
+                            <div class="flex text-neutral-700 gap-2 text-2xl" id="star-rating-picker">
+                                <i class="fa-solid fa-star cursor-pointer hover:text-yellow-500 transition duration-150" onclick="updateReviewStars(1)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-yellow-500 transition duration-150" onclick="updateReviewStars(2)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-yellow-500 transition duration-150" onclick="updateReviewStars(3)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-yellow-500 transition duration-150" onclick="updateReviewStars(4)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-yellow-500 transition duration-150" onclick="updateReviewStars(5)"></i>
+                            </div>
+                        </div>
+                        <form onsubmit="postReviewLog(event)" class="space-y-3">
+                            <textarea id="review-comment-input" rows="3" required placeholder="Share thoughts on pacing, aesthetic details, and character dynamics..." class="w-full bg-[#050508] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-brandRed transition resize-none shadow-inner"></textarea>
+                            <button type="submit" class="bg-brandRed hover:bg-brandRedDark text-white text-xs font-bold py-3.5 px-8 rounded-xl transition shadow-[0_0_20px_rgba(255,0,60,0.3)] hover:-translate-y-0.5 duration-300">Submit Review <i class="fa-solid fa-paper-plane ml-1"></i></button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Studio & Static Meta Feed -->
+                <div class="space-y-6">
+                    <div class="bg-cardBg p-6 rounded-2xl border border-white/5 space-y-5 text-sm">
+                        <div>
+                            <span class="text-neutral-500 block mb-1 text-xs uppercase font-bold tracking-wider">Production Studio</span>
+                            <strong id="modal-meta-studio" class="text-white text-base">MAPPA</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <span class="text-neutral-500 block mb-1 text-xs uppercase font-bold tracking-wider">Episodes</span>
+                                <strong id="modal-meta-eps" class="text-white">12</strong>
+                            </div>
+                            <div>
+                                <span class="text-neutral-500 block mb-1 text-xs uppercase font-bold tracking-wider">Core Rating</span>
+                                <strong id="modal-meta-rating" class="text-white"><i class="fa-solid fa-star text-yellow-500 mr-1"></i> 9.8</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4"><i class="fa-solid fa-comments text-white mr-2"></i> Community Feed</h4>
+                        <div id="modal-comments-deck" class="space-y-3 max-h-[300px] overflow-y-auto pr-2 hide-scrollbar">
+                            <!-- Populated Dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO/VIDEO TRAILER MODAL -->
+    <div id="trailer-player-modal" class="fixed inset-0 z-[250] hidden bg-black/98 backdrop-blur-md flex items-center justify-center p-4" onclick="closeTrailerPlayer()">
+        <div class="bg-cardBg w-full max-w-4xl rounded-2xl border border-white/10 overflow-hidden relative shadow-[0_0_80px_rgba(255,0,60,0.4)]" onclick="event.stopPropagation()">
+            <button onclick="closeTrailerPlayer()" class="absolute top-4 right-4 text-white hover:text-brandRed transition bg-black/50 w-10 h-10 rounded-full flex items-center justify-center z-50"><i class="fa-solid fa-xmark"></i></button>
+            <div class="p-4 bg-[#08080c] border-b border-white/5 flex items-center gap-3">
+                <i class="fa-solid fa-circle-play text-brandRed"></i>
+                <span id="trailer-title" class="text-xs font-black tracking-wider uppercase text-gray-400">Cinematic Feed Player</span>
+            </div>
+            <div class="aspect-video w-full bg-black relative" id="trailer-video-container">
+                <video id="player-screen-media" class="w-full h-full object-cover" controls></video>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATIC AUTH DRAWER / MODAL -->
+    <div id="auth-modal" class="fixed inset-0 z-[150] hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4" onclick="toggleAuthModal()">
+        <div class="bg-cardBg w-full max-w-sm rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(255,0,60,0.1)] relative overflow-hidden p-8 animate-slide-up" onclick="event.stopPropagation()">
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-sm"></i></button>
+            
+            <!-- Tab Headers -->
+            <div class="flex border-b border-white/10 mb-6 text-sm font-bold">
+                <button onclick="switchAuthTab('signin')" id="tab-signin" class="flex-1 pb-3 text-white border-b-2 border-brandRed transition">Sign In</button>
+                <button onclick="switchAuthTab('signup')" id="tab-signup" class="flex-1 pb-3 text-gray-400 hover:text-white border-b-2 border-transparent transition">Sign Up</button>
+            </div>
+
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-user-astronaut text-4xl text-brandRed mb-3 drop-shadow-[0_0_15px_rgba(255,0,60,0.6)] animate-bounce"></i>
+                <h3 id="auth-heading" class="font-display text-2xl font-black">ACCESS PROFILE</h3>
+                <p id="auth-subheading" class="text-xs text-gray-400 mt-1">Unlock catalog tracking and reviews.</p>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="signin-form" onsubmit="handleSessionLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Username or Email</label>
+                    <input type="text" id="auth-signin-username" required autocomplete="off" class="w-full bg-[#050508] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brandRed transition shadow-inner" placeholder="e.g. VashTheStampede">
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest">Password</label>
+                        <a href="javascript:void(0)" onclick="triggerPasswordReset()" class="text-[10px] text-brandRed font-bold hover:underline">Forgot password?</a>
+                    </div>
+                    <input type="password" required class="w-full bg-[#050508] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brandRed transition shadow-inner" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-brandRed hover:bg-brandRedDark text-white text-sm font-bold py-4 rounded-xl transition shadow-[0_0_20px_rgba(255,0,60,0.4)] mt-4 hover:-translate-y-0.5 duration-300">
+                    Sign In <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                </button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signup-form" onsubmit="handleSessionRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Username</label>
+                    <input type="text" id="auth-signup-username" required autocomplete="off" class="w-full bg-[#050508] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brandRed transition shadow-inner" placeholder="e.g. VashTheStampede">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Email Address</label>
+                    <input type="email" required autocomplete="off" class="w-full bg-[#050508] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brandRed transition shadow-inner" placeholder="vash@gunsmoke.com">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2">Password</label>
+                    <input type="password" required class="w-full bg-[#050508] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brandRed transition shadow-inner" placeholder="Minimum 8 characters">
+                </div>
+                <button type="submit" class="w-full bg-brandRed hover:bg-brandRedDark text-white text-sm font-bold py-4 rounded-xl transition shadow-[0_0_20px_rgba(255,0,60,0.4)] mt-4 hover:-translate-y-0.5 duration-300">
+                    Create Account <i class="fa-solid fa-user-plus ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         CINEMATIC ENGINE JAVASCRIPT LOGIC
+         ========================================== -->
+    <script>
+        let currentActiveUser = localStorage.getItem('neo_user') || null;
+        let myAnimeWatchlist = JSON.parse(localStorage.getItem('neo_watchlist')) || [];
+        let globalDatabaseReviews = JSON.parse(localStorage.getItem('neo_reviews')) || {};
+        let activeStarsRating = 0;
+        let currentModalTargetAnime = "";
+        let currentModalTrailerUrl = "";
+
+        // Seed default character scores
+        const characterProfiles = ['Satoru', 'Levi', 'Makima'];
+        characterProfiles.forEach(char => {
+            const votes = localStorage.getItem(`neo_votes_${char}`);
+            if (votes) document.getElementById(`votes-${char}`).innerText = votes;
+        });
+
+        window.onload = () => {
+            if (currentActiveUser) applySessionUI();
+            updateWatchlistDisplay();
+        };
+
+        // NOTIFICATION POPUP
+        function triggerAuraToast(text, icon = "fa-circle-check", styleColor = "text-green-500") {
+            const container = document.getElementById('toast-container');
+            const element = document.createElement('div');
+            element.className = 'bg-[#12121a] border border-white/10 p-4 rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.95)] flex items-center gap-3 animate-slide-up transition-all duration-300';
+            element.innerHTML = `<i class="fa-solid ${icon} ${styleColor} text-xl"></i><span class="text-sm font-bold text-white">${text}</span>`;
+            container.appendChild(element);
+            setTimeout(() => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                setTimeout(() => element.remove(), 300);
+            }, 3200);
+        }
+
+        // MOBILE NAVIGATION
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobile-menu');
+            drawer.classList.toggle('translate-x-full');
+            const icon = document.getElementById('menu-icon');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        function toggleWatchlistPane() {
+            document.getElementById('watchlist-pane').classList.toggle('translate-x-full');
+        }
+
+        // AUTH DRAWER TOGGLES
+        function toggleAuthModal(initialTab = 'signin') {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.body.classList.add('overflow-hidden');
+                switchAuthTab(initialTab);
+            } else {
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+
+        function switchAuthTab(type) {
+            const tabSignIn = document.getElementById('tab-signin');
+            const tabSignUp = document.getElementById('tab-signup');
+            const formSignIn = document.getElementById('signin-form');
+            const formSignUp = document.getElementById('signup-form');
+            const heading = document.getElementById('auth-heading');
+            const subheading = document.getElementById('auth-subheading');
+
+            if (type === 'signin') {
+                tabSignIn.className = "flex-1 pb-3 text-white border-b-2 border-brandRed transition";
+                tabSignUp.className = "flex-1 pb-3 text-gray-400 hover:text-white border-b-2 border-transparent transition";
+                formSignIn.classList.remove('hidden');
+                formSignUp.classList.add('hidden');
+                heading.innerText = "ACCESS PROFILE";
+                subheading.innerText = "Unlock catalog tracking and reviews.";
+            } else {
+                tabSignIn.className = "flex-1 pb-3 text-gray-400 hover:text-white border-b-2 border-transparent transition";
+                tabSignUp.className = "flex-1 pb-3 text-white border-b-2 border-brandRed transition";
+                formSignIn.classList.add('hidden');
+                formSignUp.classList.remove('hidden');
+                heading.innerText = "CREATE ACCOUNT";
+                subheading.innerText = "Join the ultimate community review tier.";
+            }
+        }
+
+        function handleSessionLogin(e) {
+            e.preventDefault();
+            const input = document.getElementById('auth-signin-username').value.trim();
+            if (!input) return;
+            saveSession(input);
+        }
+
+        function handleSessionRegister(e) {
+            e.preventDefault();
+            const input = document.getElementById('auth-signup-username').value.trim();
+            if (!input) return;
+            saveSession(input);
+        }
+
+        function saveSession(username) {
+            localStorage.setItem('neo_user', username);
+            currentActiveUser = username;
+            document.getElementById('auth-signin-username').value = "";
+            document.getElementById('auth-signup-username').value = "";
+            toggleAuthModal();
+            applySessionUI();
+            triggerAuraToast(`Access granted. Welcome, ${username}`, 'fa-shield-halved', 'text-brandRed');
+        }
+
+        function applySessionUI() {
+            document.getElementById('auth-section-desktop').innerHTML = `
+                <span class="text-sm font-bold text-neutral-400">Logged as <span class="text-white">${currentActiveUser}</span></span>
+                <button onclick="terminateSession()" class="text-xs font-black uppercase text-brandRed hover:text-white transition"><i class="fa-solid fa-power-off"></i></button>`;
+            document.getElementById('auth-section-mobile').innerHTML = `
+                <span class="text-xl text-white font-bold mb-2">Connected: ${currentActiveUser}</span>
+                <button onclick="terminateSession()" class="w-full border border-brandRed hover:bg-brandRed text-white text-sm py-4 rounded-xl font-bold transition">Terminate Access</button>`;
+        }
+
+        function terminateSession() {
+            localStorage.removeItem('neo_user');
+            window.location.reload();
+        }
+
+        function triggerPasswordReset() {
+            triggerAuraToast("Password reset link simulated to your inbox!", "fa-envelope", "text-brandRed");
+        }
+
+        // SEARCH & FILTER COMPILER
+        function searchCatalog(query) {
+            const clearQuery = query.toLowerCase().trim();
+            const resultsSection = document.getElementById('search-results-section');
+            const mainStream = document.getElementById('main-stream');
+            const searchGrid = document.getElementById('search-grid');
+            const highlight = document.getElementById('search-highlight');
+
+            // Sync inputs across responsive states
+            document.getElementById('nav-search').value = query;
+            document.getElementById('mobile-search').value = query;
+
+            if (clearQuery.length === 0) {
+                clearSearch();
+                return;
+            }
+
+            resultsSection.classList.remove('hidden');
+            mainStream.classList.add('hidden');
+            highlight.innerText = `— "${query}"`;
+
+            const indexCards = Array.from(document.querySelectorAll('.anime-card'));
+            const matchesFound = [];
+
+            indexCards.forEach(card => {
+                const title = card.getAttribute('data-title') || '';
+                const genre = card.getAttribute('data-genre') || '';
+                if (title.toLowerCase().includes(clearQuery) || genre.toLowerCase().includes(clearQuery)) {
+                    if (!matchesFound.some(m => m.title === title)) {
+                        matchesFound.push({
+                            title: title,
+                            html: card.outerHTML.replace('min-w-[260px]', 'w-full').replace('md:min-w-[320px]', 'w-full').replace('absolute -left-8', 'hidden')
+                        });
+                    }
+                }
+            });
+
+            if (matchesFound.length === 0) {
+                searchGrid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-gray-500">
+                        <i class="fa-solid fa-satellite-dish text-4xl mb-4 text-neutral-800 animate-pulse"></i>
+                        <p class="text-sm font-black uppercase tracking-wider">No corresponding records detected</p>
+                    </div>`;
+            } else {
+                searchGrid.innerHTML = matchesFound.map(m => m.html).join('');
+            }
+        }
+
+        function filterExploreGrid(genre) {
+            // Apply visual active feedback
+            const btns = document.querySelectorAll('.genre-btn');
+            btns.forEach(btn => {
+                if (btn.getAttribute('data-genre-id') === genre) {
+                    btn.classList.add('border-brandRed', 'ring-1', 'ring-brandRed');
+                } else {
+                    btn.classList.remove('border-brandRed', 'ring-1', 'ring-brandRed');
+                }
+            });
+
+            // Filter actual items inside the inline explore grid
+            const cards = document.querySelectorAll('.explore-card');
+            cards.forEach(card => {
+                const cardGenre = card.getAttribute('data-genre');
+                if (cardGenre === genre) {
+                    card.classList.remove('hidden');
+                    card.classList.add('animate-fade-in');
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('animate-fade-in');
+                }
+            });
+
+            document.getElementById('genre-reset-btn').classList.remove('hidden');
+            document.getElementById('genre-reset-btn').classList.add('flex');
+        }
+
+        function clearExploreGrid() {
+            const btns = document.querySelectorAll('.genre-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('border-brandRed', 'ring-1', 'ring-brandRed');
+            });
+
+            const cards = document.querySelectorAll('.explore-card');
+            cards.forEach(card => {
+                card.classList.remove('hidden');
+                card.classList.add('animate-fade-in');
+            });
+
+            document.getElementById('genre-reset-btn').classList.add('hidden');
+            document.getElementById('genre-reset-btn').classList.remove('flex');
+        }
+
+        function clearSearch() {
+            document.getElementById('nav-search').value = '';
+            document.getElementById('mobile-search').value = '';
+            document.getElementById('search-results-section').classList.add('hidden');
+            document.getElementById('main-stream').classList.remove('hidden');
+        }
+
+        // MOVIE TRAILER COMPONENT (Supports MP4 & YouTube Embeds)
+        function playMediaTrailer(title, srcUrl) {
+            document.getElementById('trailer-title').innerText = title;
+            const container = document.getElementById('trailer-video-container');
+            document.getElementById('trailer-player-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+
+            if (srcUrl.includes('youtube.com') || srcUrl.includes('youtu.be') || srcUrl.includes('embed/')) {
+                let videoId = '';
+                if (srcUrl.includes('embed/')) {
+                    videoId = srcUrl.split('embed/')[1].split('?')[0];
+                } else if (srcUrl.includes('v=')) {
+                    videoId = srcUrl.split('v=')[1].split('&')[0];
+                } else if (srcUrl.includes('youtu.be/')) {
+                    videoId = srcUrl.split('youtu.be/')[1].split('?')[0];
+                }
+                container.innerHTML = `<iframe id="player-screen-media" class="w-full h-full" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+            } else {
+                container.innerHTML = `<video id="player-screen-media" class="w-full h-full object-cover" controls autoplay src="${srcUrl}"></video>`;
+            }
+        }
+
+        function closeTrailerPlayer() {
+            const container = document.getElementById('trailer-video-container');
+            container.innerHTML = ''; // Destroy video/iframe to cease network streams and audio
+            document.getElementById('trailer-player-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // CHAR VOTING COMPONENT
+        function castCharacterVote(charName, e) {
+            e.stopPropagation();
+            if (!currentActiveUser) return toggleAuthModal('signin');
+            let score = parseInt(document.getElementById(`votes-${charName}`).innerText);
+            score++;
+            document.getElementById(`votes-${charName}`).innerText = score;
+            localStorage.setItem(`neo_votes_${charName}`, score);
+            triggerAuraToast(`Voted successfully for ${charName}!`, 'fa-heart', 'text-brandRed');
+        }
+
+        // WATCHLIST UTILITIES
+        function addCurrentToWatchlist() {
+            addToWatchlist(currentModalTargetAnime);
+        }
+
+        function addToWatchlist(title) {
+            if (!currentActiveUser) return toggleAuthModal('signin');
+            if (myAnimeWatchlist.includes(title)) {
+                return triggerAuraToast(`Entry already present inside watchlist.`, 'fa-exclamation-triangle', 'text-yellow-500');
+            }
+            myAnimeWatchlist.unshift(title);
+            localStorage.setItem('neo_watchlist', JSON.stringify(myAnimeWatchlist));
+            updateWatchlistDisplay();
+            triggerAuraToast(`${title} recorded securely.`);
+            if (window.innerWidth > 1024) document.getElementById('watchlist-pane').classList.remove('translate-x-full');
+        }
+
+        function removeFromWatchlist(index) {
+            const deleted = myAnimeWatchlist.splice(index, 1);
+            localStorage.setItem('neo_watchlist', JSON.stringify(myAnimeWatchlist));
+            updateWatchlistDisplay();
+            triggerAuraToast(`Removed entry: ${deleted[0]}`, 'fa-trash', 'text-neutral-500');
+        }
+
+        function clearWatchlist() {
+            if (myAnimeWatchlist.length === 0) return;
+            if (confirm("Are you sure you want to drop all catalog trackers?")) {
+                myAnimeWatchlist = [];
+                localStorage.setItem('neo_watchlist', JSON.stringify(myAnimeWatchlist));
+                updateWatchlistDisplay();
+                triggerAuraToast("Watchlist cleared.", "fa-dumpster", "text-neutral-500");
+            }
+        }
+
+        function updateWatchlistDisplay() {
+            const count = document.getElementById('watchlist-count');
+            const mobileCount = document.getElementById('watchlist-count-mobile');
+            const pane = document.getElementById('watchlist-items-feed');
+            
+            count.innerText = myAnimeWatchlist.length;
+            mobileCount.innerText = myAnimeWatchlist.length;
+
+            if (myAnimeWatchlist.length === 0) {
+                pane.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full opacity-20 text-center mt-20">
+                        <i class="fa-solid fa-ghost text-5xl mb-3"></i>
+                        <p class="text-sm font-bold uppercase tracking-widest">Watchlist Empty</p>
+                    </div>`;
+                return;
+            }
+            pane.innerHTML = myAnimeWatchlist.map((title, i) => `
+                <div class="bg-cardBg p-4 rounded-xl flex justify-between items-center border border-white/5 hover:border-brandRed/50 transition duration-300 group shadow-md animate-fade-in">
+                    <h5 class="text-sm font-bold text-white truncate pr-4">${title}</h5>
+                    <button onclick="removeFromWatchlist(${i})" class="text-gray-500 hover:text-brandRed transition transform group-hover:scale-110" title="Remove"><i class="fa-solid fa-circle-xmark text-lg"></i></button>
+                </div>`).join('');
+        }
+
+        // ANIME DESCRIPTION PANEL (Now holds customized trailer source links)
+        function openAnimeDetails(title, desc, img, studio, eps, rating, genre, trailerUrl) {
+            currentModalTargetAnime = title;
+            currentModalTrailerUrl = trailerUrl || "https://www.youtube.com/watch?v=JtqIas3bYhg";
+            
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-description').innerText = desc;
+            document.getElementById('modal-genre-tag').innerText = genre;
+            document.getElementById('modal-meta-studio').innerText = studio;
+            document.getElementById('modal-meta-eps').innerText = eps;
+            document.getElementById('modal-meta-rating').innerHTML = `<i class="fa-solid fa-star text-yellow-500 mr-1"></i> ${rating}`;
+            document.getElementById('modal-backdrop-img').style.backgroundImage = `linear-gradient(to top, #09090e 0%, rgba(9,9,14,0.4) 65%, transparent 100%), url('${img}')`;
+            
+            updateReviewStars(0);
+            document.getElementById('details-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            renderReviews(title);
+        }
+
+        function closeAnimeDetails() {
+            document.getElementById('details-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function closeAnimeDetailsOutside(e) {
+            if (e.target.id === 'details-modal') closeAnimeDetails();
+        }
+
+        function updateReviewStars(rating) {
+            activeStarsRating = rating;
+            const stars = document.getElementById('star-rating-picker').children;
+            for(let i = 0; i < 5; i++) {
+                stars[i].className = `fa-solid fa-star cursor-pointer transition-all duration-300 ${i < rating ? 'text-yellow-500 drop-shadow-[0_0_10px_rgba(234,179,8,0.8)] scale-110' : 'text-neutral-700 hover:text-yellow-500'}`;
+            }
+        }
+
+        function postReviewLog(e) {
+            e.preventDefault();
+            if (!currentActiveUser) { closeAnimeDetails(); return toggleAuthModal('signin'); }
+            if (activeStarsRating === 0) return triggerAuraToast("Assign a star rating to commit score.", "fa-exclamation-circle", "text-red-500");
+            
+            const comment = document.getElementById('review-comment-input').value.trim();
+            if (!globalDatabaseReviews[currentModalTargetAnime]) globalDatabaseReviews[currentModalTargetAnime] = [];
+            
+            globalDatabaseReviews[currentModalTargetAnime].unshift({
+                user: currentActiveUser,
+                stars: activeStarsRating,
+                text: comment
+            });
+            localStorage.setItem('neo_reviews', JSON.stringify(globalDatabaseReviews));
+            document.getElementById('review-comment-input').value = "";
+            updateReviewStars(0);
+            triggerAuraToast("Review saved to community logs.");
+            renderReviews(currentModalTargetAnime);
+        }
+
+        function renderReviews(title) {
+            const feed = document.getElementById('modal-comments-deck');
+            const logs = globalDatabaseReviews[title] || [];
+            if (logs.length === 0) {
+                feed.innerHTML = `<p class="text-xs text-gray-500 py-6 text-center italic border border-dashed border-white/10 rounded-xl">No active reviews saved. Submit above to record your analysis.</p>`;
+            } else {
+                feed.innerHTML = logs.map(l => `
+                    <div class="bg-[#12121a]/60 p-4 rounded-xl border border-white/5 space-y-2 mb-3 shadow-inner animate-fade-in">
+                        <div class="flex justify-between items-center text-xs border-b border-white/5 pb-2">
+                            <strong class="text-neonCyan tracking-wider"><i class="fa-solid fa-user-circle mr-1"></i> ${l.user}</strong>
+                            <span class="text-yellow-500 font-bold"><i class="fa-solid fa-star"></i> ${l.stars}/5</span>
+                        </div>
+                        <p class="text-xs text-gray-300 font-light leading-relaxed break-words">${l.text}</p>
+                    </div>`).join('');
+            }
+        }
+    </script>
+</body>
+</html>
